@@ -62,7 +62,7 @@ def UpdateStartupService(idStartup):
     ubicacion = data.get("ubicacion")
     inversionRecibida = data.get("inversionRecibida")
 
-    retorno = ms.actualizar_startup(idStartup,  ubicacion, inversionRecibida)
+    retorno = ms.actualizar_startup(idStartup, ubicacion, inversionRecibida)
 
     if retorno == -1:
         return jsonify({"error": "Startup no encontrada o error al actualizar"}), 404
