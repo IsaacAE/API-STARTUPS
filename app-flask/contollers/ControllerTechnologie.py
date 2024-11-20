@@ -36,28 +36,28 @@ def ReadTechnologyByIdService(idTechnologie):
     return jsonify(technology_json), 200
 
  #Búsqueda por nombre
-@technologie_blueprint.route('/search/name/<string:nombre>', methods=['GET'])
+@technologie_blueprint.route('/read/name/<string:nombre>', methods=['GET'])
 def buscar_por_nombre_technologie(nombre):
     resultados = mt.buscar_por_nombre_technologie(nombre)
     tech_json = [{"idTechnologie": t.idTechnologie, "nombre": t.nombre} for t in resultados]
     return jsonify(tech_json), 200
 
 # Búsqueda por sector
-@technologie_blueprint.route('/search/sector/<string:sector>', methods=['GET'])
+@technologie_blueprint.route('/read/sector/<string:sector>', methods=['GET'])
 def buscar_por_sector(sector):
     resultados = mt.buscar_por_sector(sector)
     tech_json = [{"idTechnologie": t.idTechnologie, "sector": t.sector} for t in resultados]
     return jsonify(tech_json), 200
 
 # Búsqueda por descripción
-@technologie_blueprint.route('/search/description/<string:descripcion>', methods=['GET'])
+@technologie_blueprint.route('/read/description/<string:descripcion>', methods=['GET'])
 def buscar_por_descripcion(descripcion):
     resultados = mt.buscar_por_descripcion(descripcion)
     tech_json = [{"idTechnologie": t.idTechnologie, "descripcion": t.descripcion} for t in resultados]
     return jsonify(tech_json), 200
 
 # Búsqueda por estado de adopción
-@technologie_blueprint.route('/search/adoption-state/<string:estadoAdopcion>', methods=['GET'])
+@technologie_blueprint.route('/read/adoption-state/<string:estadoAdopcion>', methods=['GET'])
 def buscar_por_estado_adopcion(estadoAdopcion):
     resultados = mt.buscar_por_estado_adopcion(estadoAdopcion)
     tech_json = [{"idTechnologie": t.idTechnologie, "estadoAdopcion": t.estadoAdopcion} for t in resultados]
