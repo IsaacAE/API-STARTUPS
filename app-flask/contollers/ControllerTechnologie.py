@@ -1,105 +1,91 @@
-from flask import Blueprint, request, render_template, flash, url_for, redirect
+from flask import Blueprint, request, jsonify
 
-from model import model_usuarios as mu
-
-technologie_blueprint = Blueprint('technologie', __name__, url_prefix='/api/technologie')
-
-@usuario_blueprint.route('/buscarUsuario', methods=['GET', 'POST'])
-def mostrar_usuario_por_id():
-     if request.method == "GET":
-        return render_template('leer_usuarios.html')
-     else:
-
-        id = request.form["userId"]
-        usuario = mu.leer_usuario_por_id(id)
-        if usuario is not None:
-           return render_template("mostrar_usuario.html", usuario=usuario)
-        else:
-            return render_template("mensaje.html", mensaje= "No existe usuario con dicho Id")
-     
-@usuario_blueprint.route('/borrar', methods=['GET', 'POST'])
-def eliminar_usuario_por_id():
-     if request.method == "GET":
-        return render_template('borrar_usuarios.html')
-     else:
-
-        id = request.form["userId"]
-        print(id)
-        retorno = mu.eliminar_usuario(id)
-         
-        if retorno == -1:
-            return render_template("mensaje.html", mensaje="Ha habido un error al intentar borrar")
-        else:
-            return render_template("mensaje.html", mensaje="Usuario borrado con éxito")
+from model import model_technologie as mt
 
 
-@usuario_blueprint.route('/registro', methods=['GET', 'POST'])
-def agregar_usuario():
-    if request.method == "GET":
-        return render_template('crear_usuario.html')
-    else:
 
-        nombre = request.form["nombre"]
-        print(nombre)
-        apellidoP = request.form["apPat" ]
-        print(apellidoP)
-        apellidoM = request.form["apMat"]
-        print(apellidoM)
-        correo = request.form["email"]
-        print(correo)
-        password = request.form["password"]
-        print(password)
-        
-        superuser = 1 if request.form.get('superUser') == '1' else 0
-        print(superuser)
-            
-        
-        retorno = mu.crear_usuario(nombre, apellidoP, password, apellidoM, correo, None, superuser)
-        
-        if retorno == -1:
-            return render_template("mensaje.html", mensaje="Ha habido un error al crear ese usuario")
-        else:
-            return render_template("mensaje.html", mensaje="Usuario creado con éxito")
-    
-    
-    
-@usuario_blueprint.route('/leerUsuarios')
-def mostrar_usuarios():
-    usuarios = mu.leer_usuarios()
-    return render_template("mostrar_usuarios.html", usuarios=usuarios)
 
-@usuario_blueprint.route('/actualizar', methods=['GET', 'POST'])
-def actualizar_usuario():
-    if request.method == "GET":
-        return render_template('actualizar_usuario.html')
-    else:
-        id = request.form["userId"]
-        print(id)
-        nombre = request.form["nombre"]
-        print(nombre)
-        apellidoP = request.form["apPat" ]
-        print(apellidoP)
-        apellidoM = request.form["apMat"]
-        print(apellidoM)
-        correo = request.form["email"]
-        print(correo)
-        password = request.form["password"]
-        print(password)
-        
-        if 'superUser' in request.form:
-            superuser_value = int(request.form["superUser"])
-            if superuser_value == 1 or superuser_value == 0:
-                superuser = superuser_value
-            else:
-               superuser=None
-        else:
-            superuser=None
-            
-            
-        
-        retorno = mu.actualizar_usuario(id, nombre, apellidoP, apellidoM, password, correo, None, superuser)
-        
-        if retorno == -1:
-            return render_template("mensaje.html", mensaje="Ha habido un error al querer actualizar")
-        else:
-            return render_template("mensaje.html", mensaje="Usuario actualizado con éxito")
+
+
+technologie_blueprint = Blueprint('technologies', __name__, url_prefix='/api/technologies')
+
+# Obtener todas las tecnologías
+@technologie_blueprint.route('/read', methods=['GET'])
+def ReadTechnologyService():
+    technologies = mt.leer_technologies()
+    technologies_json = [
+        {
+            "idTechnologie": technology.idTechnologie,
+            "nombre": technology.nombre,
+            "sector": technology.sector,
+            "descripcion": technology.descripcion,
+            "estadoAdopcion": technology.estadoAdopcion
+        }
+        for technology in technologies
+    ]
+    return jsonify(technologies_json), 200
+
+# Obtener una tecnología por ID
+@technologie_blueprint.route('/read/<int:idTechnologie>', methods=['GET'])
+def ReadTechnologyByIdService(idTechnologie):
+    technology = mt.leer_technologie_por_id(idTechnologie)
+    if technology is None:
+        return jsonify({"error": "Tecnología no encontrada"}), 404
+    technology_json = {
+        "idTechnologie": technology.idTechnologie,
+        "nombre": technology.nombre,
+        "sector": technology.sector,
+        "descripcion": technology.descripcion,
+        "estadoAdopcion": technology.estadoAdopcion
+    }
+    return jsonify(technology_json), 200
+
+# Crear una nueva tecnología
+@technologie_blueprint.route('/create', methods=['POST'])
+def CreateTechnologyService():
+    data = request.get_json()
+    nombre = data.get("nombre")
+    sector = data.get("sector")
+    descripcion = data.get("descripcion")
+    estadoAdopcion = data.get("estadoAdopcion")
+
+    if not nombre or not sector or not descripcion or not estadoAdopcion:
+        return jsonify({"error": "Faltan campos obligatorios"}), 400
+
+    retorno = mt.crear_technologie(nombre, sector, descripcion, estadoAdopcion)
+
+    if retorno == -1:
+        return jsonify({"error": "Error al crear la tecnología"}), 500
+    return jsonify({"message": "Tecnología creada con éxito"}), 201
+
+# Actualizar una tecnología por ID
+@technologie_blueprint.route('/update/<int:idTechnologie>', methods=['PUT'])
+def UpdateTechnologyService(idTechnologie):
+    data = request.get_json()
+    descripcion = data.get("descripcion")
+    estadoAdopcion = data.get("estadoAdopcion")
+
+    retorno = mt.actualizar_technologie(idTechnologie, descripcion, estadoAdopcion)
+
+    if retorno == -1:
+        return jsonify({"error": "Tecnología no encontrada o error al actualizar"}), 404
+    return jsonify({"message": "Tecnología actualizada con éxito"}), 200
+
+# Eliminar una tecnología por ID
+@technologie_blueprint.route('/delete/<int:idTechnologie>', methods=['DELETE'])
+def DeleteTechnologyService(idTechnologie):
+    retorno = mt.eliminar_technologie(idTechnologie)
+
+    if retorno == -1:
+        return jsonify({"error": "Tecnología no encontrada o error al eliminar"}), 404
+    return jsonify({"message": "Tecnología eliminada con éxito"}), 200
+
+# Eliminar todas las tecnologías
+@technologie_blueprint.route('/delete', methods=['DELETE'])
+def DeleteAllTechnologiesService():
+    retorno = mt.eliminar_technologie()
+
+    if retorno == -1:
+        return jsonify({"error": "Error al eliminar todas las tecnologías"}), 500
+    return jsonify({"message": "Todas las tecnologías han sido eliminadas"}), 200
+

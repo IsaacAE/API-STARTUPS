@@ -27,20 +27,14 @@ def leer_startup_por_id(id_startup):
     return Startup.query.get(id_startup)
 
 # Actualizar una startup por su ID
-def actualizar_startup(id_startup, nombre=None, fechaFundacion=None, ubicacion=None, categoria=None, inversionRecibida=None):
+def actualizar_startup(id_startup, ubicacion=None,inversionRecibida=None):
     startup = Startup.query.get(id_startup)
     if startup is None:
         return -1
     else:
-        if nombre:
-            startup.nombre = nombre
-        if fechaFundacion:
-            startup.fechaFundacion = fechaFundacion
         if ubicacion:
             startup.ubicacion = ubicacion
-        if categoria:
-            startup.categoria = categoria
-        if inversionRecibida is not None:
+        if inversionRecibida is not None and float(inversionRecibida) > float(startup.inversionRecibida):
             startup.inversionRecibida = inversionRecibida
         try:
             db.session.commit()

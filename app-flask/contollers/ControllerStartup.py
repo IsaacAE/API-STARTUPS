@@ -5,7 +5,7 @@ startup_blueprint = Blueprint('startup', __name__, url_prefix='/api/startups')
 
 # Obtener todas las startups
 @startup_blueprint.route('/read', methods=['GET'])
-def obtener_startups():
+def ReadStartupService():
     startups = ms.leer_startups()
     startups_json = [
         {
@@ -38,7 +38,7 @@ def obtener_startup_por_id(idStartup):
 
 # Crear una nueva startup
 @startup_blueprint.route('/create', methods=['POST'])
-def crear_startup():
+def CreateStartupService():
     data = request.get_json()
     nombre = data.get("nombre")
     fechaFundacion = data.get("fechaFundacion")
@@ -57,15 +57,12 @@ def crear_startup():
 
 # Actualizar una startup por ID
 @startup_blueprint.route('/update/<int:idStartup>', methods=['PUT'])
-def actualizar_startup(idStartup):
+def UpdateStartupService(idStartup):
     data = request.get_json()
-    nombre = data.get("nombre")
-    fechaFundacion = data.get("fechaFundacion")
     ubicacion = data.get("ubicacion")
-    categoria = data.get("categoria")
     inversionRecibida = data.get("inversionRecibida")
 
-    retorno = ms.actualizar_startup(idStartup, nombre, fechaFundacion, ubicacion, categoria, inversionRecibida)
+    retorno = ms.actualizar_startup(idStartup,  ubicacion, inversionRecibida)
 
     if retorno == -1:
         return jsonify({"error": "Startup no encontrada o error al actualizar"}), 404
@@ -73,7 +70,7 @@ def actualizar_startup(idStartup):
 
 # Eliminar una startup por ID
 @startup_blueprint.route('/delete/<int:idStartup>', methods=['DELETE'])
-def eliminar_startup(idStartup):
+def DeleteStartupService(idStartup):
     retorno = ms.eliminar_startup(idStartup)
 
     if retorno == -1:
