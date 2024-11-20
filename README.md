@@ -1,9 +1,9 @@
-#Reto CIID
+# Reto CIID
 
 Kevin Alcántara
 
 
-##Preparativos
+## Preparativos
 
 Iniciar el entonro virtual con 
 
@@ -17,7 +17,7 @@ Y utilizar el archivo para instalar las dependencias necesarias con:
 pip install requirements.txt
 ```
 
-##Ejecución
+## Ejecución
 Ya con el entorno virtual activado, usar el comando
 
 ```
@@ -32,11 +32,11 @@ python3 app.py
 
 Para SO basados en Unix.
 
-##Base de Datos
+## Base de Datos
 
 De forma local puede ser requerido primero ejecutar el script llamado BD.sql para crear y usar la base de datos
 
-##Rutas
+## Rutas
 
 Con las siguientes rutas, una vez corriendo el servidor de manera local, es posible probarlo con una herramienta como POSTMAN para ver su funcionamiento
 
