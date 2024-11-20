@@ -103,12 +103,4 @@ def DeleteTechnologyService(idTechnologie):
         return jsonify({"error": "Tecnología no encontrada o error al eliminar"}), 404
     return jsonify({"message": "Tecnología eliminada con éxito"}), 200
 
-# Eliminar todas las tecnologías
-@technologie_blueprint.route('/delete', methods=['DELETE'])
-def DeleteAllTechnologiesService():
-    retorno = mt.eliminar_technologie()
-
-    if retorno == -1:
-        return jsonify({"error": "Error al eliminar todas las tecnologías"}), 500
-    return jsonify({"message": "Todas las tecnologías han sido eliminadas"}), 200
 
