@@ -25,6 +25,31 @@ def leer_startups():
 # Leer una startup por su ID
 def leer_startup_por_id(id_startup):
     return Startup.query.get(id_startup)
+    
+# Buscar startups por nombre
+def buscar_por_nombre(nombre):
+    try:
+        return Startup.query.filter(Startup.nombre.ilike(f"%{nombre}%")).all()
+    except Exception as e:
+        print(f"Error al buscar por nombre: {e}")
+        return []
+
+# Buscar startups por ubicación
+def buscar_por_ubicacion(ubicacion):
+    try:
+        return Startup.query.filter(Startup.ubicacion.ilike(f"%{ubicacion}%")).all()
+    except Exception as e:
+        print(f"Error al buscar por ubicación: {e}")
+        return []
+
+# Buscar startups por categoría
+def buscar_por_categoria(categoria):
+    try:
+        return Startup.query.filter(Startup.categoria.ilike(f"%{categoria}%")).all()
+    except Exception as e:
+        print(f"Error al buscar por categoría: {e}")
+        return []
+
 
 # Actualizar una startup por su ID
 def actualizar_startup(id_startup, ubicacion=None,inversionRecibida=None):
@@ -66,4 +91,6 @@ def eliminar_startup(id_startup=None):
                 return -1
         else:
             return -1
+            
+ 
 

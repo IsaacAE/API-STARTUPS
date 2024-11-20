@@ -54,6 +54,29 @@ def CreateStartupService():
     if retorno == -1:
         return jsonify({"error": "Error al crear la startup"}), 500
     return jsonify({"message": "Startup creada con éxito"}), 201
+    
+# Búsqueda por nombre
+@startup_blueprint.route('/read/name/<string:nombre>', methods=['GET'])
+def buscar_por_nombre(nombre):
+    resultados = ms.buscar_por_nombre(nombre)
+    startups_json = [{"idStartup": s.idStartup, "nombre": s.nombre} for s in resultados]
+    return jsonify(startups_json), 200
+
+# Búsqueda por ubicación
+@startup_blueprint.route('/read/location/<string:ubicacion>', methods=['GET'])
+def buscar_por_ubicacion(ubicacion):
+    resultados = ms.buscar_por_ubicacion(ubicacion)
+    startups_json = [{"idStartup": s.idStartup, "ubicacion": s.ubicacion} for s in resultados]
+    return jsonify(startups_json), 200
+
+# Búsqueda por categoría
+@startup_blueprint.route('/read/category/<string:categoria>', methods=['GET'])
+def buscar_por_categoria(categoria):
+    resultados = ms.buscar_por_categoria(categoria)
+    startups_json = [{"idStartup": s.idStartup, "categoria": s.categoria} for s in resultados]
+    return jsonify(startups_json), 200
+
+
 
 # Actualizar una startup por ID
 @startup_blueprint.route('/update/<int:idStartup>', methods=['PUT'])

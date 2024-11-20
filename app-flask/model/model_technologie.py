@@ -28,6 +28,38 @@ def leer_technologies():
         print(f"Error al leer las tecnologías: {e}")
         return []
 
+# Buscar tecnologías por nombre
+def buscar_por_nombre_technologie(nombre):
+    try:
+        return Technologie.query.filter(Technologie.nombre.ilike(f"%{nombre}%")).all()
+    except Exception as e:
+        print(f"Error al buscar por nombre: {e}")
+        return []
+
+# Buscar tecnologías por sector
+def buscar_por_sector(sector):
+    try:
+        return Technologie.query.filter(Technologie.sector.ilike(f"%{sector}%")).all()
+    except Exception as e:
+        print(f"Error al buscar por sector: {e}")
+        return []
+
+# Buscar tecnologías por descripción
+def buscar_por_descripcion(descripcion):
+    try:
+        return Technologie.query.filter(Technologie.descripcion.ilike(f"%{descripcion}%")).all()
+    except Exception as e:
+        print(f"Error al buscar por descripción: {e}")
+        return []
+
+# Buscar tecnologías por estado de adopción
+def buscar_por_estado_adopcion(estadoAdopcion):
+    try:
+        return Technologie.query.filter(Technologie.estadoAdopcion.ilike(f"%{estadoAdopcion}%")).all()
+    except Exception as e:
+        print(f"Error al buscar por estado de adopción: {e}")
+        return []
+
 
 # Leer una tecnología por su ID
 def leer_technologie_por_id(id_technologie):

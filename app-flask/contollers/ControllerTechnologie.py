@@ -1,10 +1,5 @@
 from flask import Blueprint, request, jsonify
-
 from model import model_technologie as mt
-
-
-
-
 
 
 technologie_blueprint = Blueprint('technologies', __name__, url_prefix='/api/technologies')
@@ -39,6 +34,34 @@ def ReadTechnologyByIdService(idTechnologie):
         "estadoAdopcion": technology.estadoAdopcion
     }
     return jsonify(technology_json), 200
+
+ #Búsqueda por nombre
+@technologie_blueprint.route('/search/name/<string:nombre>', methods=['GET'])
+def buscar_por_nombre_technologie(nombre):
+    resultados = mt.buscar_por_nombre_technologie(nombre)
+    tech_json = [{"idTechnologie": t.idTechnologie, "nombre": t.nombre} for t in resultados]
+    return jsonify(tech_json), 200
+
+# Búsqueda por sector
+@technologie_blueprint.route('/search/sector/<string:sector>', methods=['GET'])
+def buscar_por_sector(sector):
+    resultados = mt.buscar_por_sector(sector)
+    tech_json = [{"idTechnologie": t.idTechnologie, "sector": t.sector} for t in resultados]
+    return jsonify(tech_json), 200
+
+# Búsqueda por descripción
+@technologie_blueprint.route('/search/description/<string:descripcion>', methods=['GET'])
+def buscar_por_descripcion(descripcion):
+    resultados = mt.buscar_por_descripcion(descripcion)
+    tech_json = [{"idTechnologie": t.idTechnologie, "descripcion": t.descripcion} for t in resultados]
+    return jsonify(tech_json), 200
+
+# Búsqueda por estado de adopción
+@technologie_blueprint.route('/search/adoption-state/<string:estadoAdopcion>', methods=['GET'])
+def buscar_por_estado_adopcion(estadoAdopcion):
+    resultados = mt.buscar_por_estado_adopcion(estadoAdopcion)
+    tech_json = [{"idTechnologie": t.idTechnologie, "estadoAdopcion": t.estadoAdopcion} for t in resultados]
+    return jsonify(tech_json), 200
 
 # Crear una nueva tecnología
 @technologie_blueprint.route('/create', methods=['POST'])

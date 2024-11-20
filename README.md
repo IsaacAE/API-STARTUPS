@@ -1,8 +1,9 @@
-# Práctica 3
-NOTAS: Para actualizar basta con dar el ID y cambiar los campos que desean actualizarse.
-Si se da a borrar sin dar un ID se borra toda la tabla en la que se esté.
-El propio HTML indica los campos obligatorios a llenar para crear un nuevo registro.
+#Reto CIID
 
-## Elaboró:
+Kevin Alcántara
 
-- Alcántara Estrada Kevin Isaac
+
+O en su defecto, utilizar el archivo requirements.txt que se proporciona
+
+Run:
+python -m flask run
