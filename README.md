@@ -5,13 +5,7 @@ Kevin Alcántara
 
 ##Preparativos
 
-Acceder al repositorio de app-flask con:
-
-```
-cd app-flask
-```
-
-Luego, iniciar el entonro virtual con 
+Iniciar el entonro virtual con 
 
 ```
 source env/binactivate
