@@ -40,6 +40,8 @@ Para SO basados en Unix.
 
 ##Rutas
 
+Con las siguientes rutas, una vez corriendo el servidor de manera local, es posible probarlo con una herramienta como POSTMAN para ver su funcionamiento
+
 ### Rutas de la API Startups
 
 #### 1. Obtener todas las startups
